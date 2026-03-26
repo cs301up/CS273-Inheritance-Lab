@@ -174,7 +174,11 @@ public class Face {
     //
     ////////////////////////////////////////////////////////
     protected void helpDrawOn(Graphics g) {
-        // draw the head, first so that other features will be visible over it
+        // Helps visualize what arguments to use
+        // for pixelX(), pixelY(), distX(), and distY().
+        this.drawAxes(g);
+        
+        // draw the head
         this.drawHead(g);
 
         // draw the other features
@@ -185,6 +189,59 @@ public class Face {
         this.drawEars(g);
     }
 
+    ////////////////////////////////////////////////////////
+    // drawAxes - draws the x- and y-coordinates produced by 
+    //  the pixelX(), pixelY(), distX(), and distY() methods.
+    //  This should help you know what arguments to put in those methods.
+    //
+    // calling sequence:
+    //   aFace.drawAxes(g);
+    //
+    // parameters:
+    //   g - the graphics object on which to draw the axes
+    //
+    // side-effects:
+    //   axes are drawn on the graphics object. The graphics object's
+    //   color is modified.
+    //
+    // bugs/anomalies:
+    //   The head can cover up parts of the axes, or go beyond them. 
+    //   (Either is OK for this lab!)
+    ////////////////////////////////////////////////////////
+    protected final void drawAxes(Graphics g) {
+        Color axisColor = new Color(240, 240, 240);
+        g.setColor(axisColor);
+        
+        double tickSize = 2.0;
+        
+        // horizontal axis
+        g.drawLine(pixelX(0),pixelY(0),pixelX(100),pixelY(0)); 
+        
+        // horizontal axis tick marks
+        for (int tickX = pixelX(0); tickX <= pixelX(100); tickX += distX(10)) {
+            g.drawLine(tickX, pixelY(-tickSize/2), tickX, pixelY(tickSize/2));
+        }
+        
+        // horizontal axis labels
+        double horizAxisTextOffset = -3.0;
+        g.drawString("0", pixelX(0 - 2), pixelY(horizAxisTextOffset));
+        g.drawString("100", pixelX(100 - 5), pixelY(horizAxisTextOffset));
+        
+        // vertical axis
+        g.drawLine(x,y,x,y+height); 
+
+        // vertical axis tick marks
+        for (int tickY = pixelY(0); tickY <= pixelY(100); tickY += distY(10)) {
+            g.drawLine(pixelX(-tickSize/2), tickY, pixelX(tickSize/2), tickY);
+        }
+        
+        // vertical axis labels
+        double vertAxisTextOffset = 2.0;
+        g.drawString("0", pixelX(-6), pixelY(0 + vertAxisTextOffset));
+        g.drawString("100", pixelX(-14), pixelY(100 + vertAxisTextOffset));
+    }    
+    
+    
     ////////////////////////////////////////////////////////
     // drawHead - draws the "head" portion of the face
     //
@@ -258,7 +315,7 @@ public class Face {
         // 18% in from the left portion of the head and 38% of the way down
         // from the top of the head.  The height and width respectively be
         // 11% of those of the head.  The left eye should be similarly placed,
-        // but on the other side.	
+        // but on the other side.    
         g.setColor(Color.white);
         g.fillOval(pixelX(18), pixelY(38), distX(11), distY(11));
         g.fillOval(pixelX(74), pixelY(38), distX(11), distY(11));
